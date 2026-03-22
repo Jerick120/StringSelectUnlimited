@@ -4,6 +4,10 @@ A wrapper around discord.js `StringSelectMenu` to bypass Discord's 25 option lim
 
 -  Used by [Pokecord++](https://pokecord.org) and [Audicy](https://audicy.xyz) Discord bots.
 
+# Install
+
+`npm install string-select-unlimited`
+
 # Usage
 
 ## Constructor
