@@ -108,7 +108,7 @@ export class StringSelectUnlimited extends StringSelectMenuBuilder {
 
     override addOptions(options: SelectMenuComponentOptionData[]): this {
         this.menuOptions.push(...options);
-        this.totalItems += options.length;
+        if(this.totalItems < this.menuOptions.length) this.totalItems += options.length
 
         this.setPlaceholder();
 
