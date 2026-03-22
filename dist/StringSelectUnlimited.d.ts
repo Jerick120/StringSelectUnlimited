@@ -22,7 +22,7 @@ export declare class StringSelectUnlimited extends StringSelectMenuBuilder {
     setOptions(options: SelectMenuComponentOptionData[]): this;
     addOptions(options: SelectMenuComponentOptionData[]): this;
     spliceOptions(index: number, deleteCount: number, options: APISelectMenuOption[]): this;
-    setPlaceholder(placeholder: string): this;
+    setPlaceholder(placeholder?: string): this;
     setTotalItems(total: number): this;
     setPageMetadata(metadata: PageData): this;
     goto(page: number): this;

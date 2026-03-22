@@ -8,7 +8,7 @@ export class StringSelectUnlimited extends StringSelectMenuBuilder {
     pageData;
     totalPages = 0;
     totalItems;
-    placeholder = '';
+    placeholder = 'Select an option';
     menuLimit = MAX_MENU_ITEMS;
     /**
      * @param page Initial page number
@@ -77,35 +77,32 @@ export class StringSelectUnlimited extends StringSelectMenuBuilder {
     setOptions(options) {
         this.menuOptions = options;
         this.totalItems ||= options.length;
-        this.setPlaceholder(this.placeholder);
+        this.setPlaceholder();
         return super.setOptions(this.getPage());
     }
     addOptions(options) {
         this.menuOptions.push(...options);
         this.totalItems += options.length;
-        this.setPlaceholder(this.placeholder);
+        this.setPlaceholder();
         return super.setOptions(this.getPage());
     }
     spliceOptions(index, deleteCount, options) {
         const deleted = this.menuOptions.splice(index, deleteCount, ...options);
         this.totalItems = this.totalItems + (options.length - deleted.length);
-        this.setPlaceholder(this.placeholder);
-        return super.setOptions(this.getPage());
+        this.setPlaceholder();
+        return super.spliceOptions(index, deleteCount, ...options);
     }
     setPlaceholder(placeholder) {
         this.parsePagination();
-        this.placeholder ||= placeholder;
-        if (placeholder) {
-            const placeholderParsed = `${placeholder}${this.totalItems >= MAX_MENU_ITEMS ? ` - Page ${this.page}` : ""}`;
-            return super.setPlaceholder(placeholderParsed);
-        }
-        return this;
+        this.placeholder = placeholder || this.placeholder;
+        const placeholderParsed = `${this.placeholder}${this.totalItems >= MAX_MENU_ITEMS ? ` - Page ${this.page}` : ""}`;
+        return super.setPlaceholder(placeholderParsed);
     }
     setTotalItems(total) {
         if (total < this.menuOptions.length)
             throw new Error("Total cannot be less than the number of items.");
         this.totalItems = total;
-        this.setPlaceholder(this.placeholder);
+        this.setPlaceholder();
         return this;
     }
     setPageMetadata(metadata) {

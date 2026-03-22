@@ -19,7 +19,7 @@ export class StringSelectUnlimited extends StringSelectMenuBuilder {
     private totalPages = 0;
     private totalItems: number;
 
-    private placeholder = '';
+    private placeholder = 'Make a selection';
 
     private menuLimit = MAX_MENU_ITEMS;
 
@@ -104,7 +104,7 @@ export class StringSelectUnlimited extends StringSelectMenuBuilder {
         this.menuOptions = options;
         this.totalItems ||= options.length;
 
-        this.setPlaceholder(this.placeholder);
+        this.setPlaceholder();
 
         return super.setOptions(this.getPage());
     }
@@ -113,7 +113,7 @@ export class StringSelectUnlimited extends StringSelectMenuBuilder {
         this.menuOptions.push(...options);
         this.totalItems += options.length;
 
-        this.setPlaceholder(this.placeholder);
+        this.setPlaceholder();
 
         return super.setOptions(this.getPage());
     }
@@ -122,26 +122,26 @@ export class StringSelectUnlimited extends StringSelectMenuBuilder {
         const deleted = this.menuOptions.splice(index, deleteCount, ...options);
         this.totalItems = this.totalItems + (options.length - deleted.length)
 
-        this.setPlaceholder(this.placeholder);
+        this.setPlaceholder();
 
-        return super.setOptions(this.getPage());
+        return super.spliceOptions(index, deleteCount, ...options);
     }
 
-    override setPlaceholder(placeholder: string): this {
+    override setPlaceholder(placeholder?: string): this {
         this.parsePagination()
-        this.placeholder ||= placeholder;
-        if (placeholder) {
-            const placeholderParsed = `${placeholder}${this.totalItems >= MAX_MENU_ITEMS ? ` - Page ${this.page}` : ""}`;
-            return super.setPlaceholder(placeholderParsed);
-        }
-        return this
+        this.placeholder = placeholder || this.placeholder
+        const placeholderParsed = `${this.placeholder}${this.totalItems >= MAX_MENU_ITEMS ? ` - Page ${this.page}` : ""}`;
+
+        return super.setPlaceholder(placeholderParsed);
     }
 
     public setTotalItems(total: number): this {
         if (total < this.menuOptions.length)
             throw new Error("Total cannot be less than the number of items.");
         this.totalItems = total;
-        this.setPlaceholder(this.placeholder)
+
+        this.setPlaceholder()
+
         return this;
     }
 
