@@ -1,1 +1,0 @@
-{"version":3,"file":"StringSelectUnlimitedOptions.d.ts","sourceRoot":"","sources":["../../src/typings/StringSelectUnlimitedOptions.ts"],"names":[],"mappings":"AAAA,OAAO,KAAK,EAAE,QAAQ,EAAE,MAAM,eAAe,CAAC;AAE9C,MAAM,WAAW,4BAA4B;IAC3C,IAAI,CAAC,EAAE,MAAM,CAAC;IACd,UAAU,CAAC,EAAE,MAAM,CAAC;IACpB,YAAY,CAAC,EAAE,QAAQ,CAAC;CACzB"}
