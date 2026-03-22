@@ -1,6 +1,6 @@
 # String Select Unlimited
 
-A wrapper around discord.js `StringSelectMenu` to bypass Discord's 25 option limit by adding pagination.
+A wrapper around [Discord.js](https://discord.js.org/) `StringSelectMenu` to bypass Discord's `25` option limit by adding pagination.
 
 -  Used by [Pokecord++](https://pokecord.org) and [Audicy](https://audicy.xyz) Discord bots.
 
