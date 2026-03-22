@@ -53,7 +53,7 @@ adding pagination.
 ```js
 import axios from 'axios';
 import {ActionRowBuilder} from 'discord.js';
-import {StringSelectUnlimited} from 'StringSelectUnlimited';
+import {StringSelectUnlimited} from 'stringselectunlimited';
 
 const menu = new StringSelectUnlimited().setTotalItems(500);
 const limit = menu.pageSize;
@@ -71,7 +71,7 @@ return new ActionRowBuilder().addComponents(menu);
 
 ```js
 import {ActionRowBuilder} from 'discord.js';
-import {StringSelectUnlimited} from 'StringSelectUnlimited';
+import {StringSelectUnlimited} from 'stringselectunlimited';
 
 const data = [{label: 'Example', value: '1'}]; // large array
 const menu = new StringSelectUnlimited().setOptions(data);
