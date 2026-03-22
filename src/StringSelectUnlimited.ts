@@ -2,7 +2,6 @@ import {
     StringSelectMenuBuilder,
     type SelectMenuComponentOptionData,
 } from "discord.js";
-import type {APISelectMenuOption} from 'discord-api-types/v10'
 import type {PageData} from "./typings/PageData.js";
 import type {StringSelectUnlimitedOptions} from "./typings/StringSelectUnlimitedOptions.js";
 
@@ -102,7 +101,6 @@ export class StringSelectUnlimited extends StringSelectMenuBuilder {
     override setOptions(options: SelectMenuComponentOptionData[]): this {
         this.menuOptions = options;
         if(!this.totalItems || options.length > this.totalItems) this.totalItems = options.length
-
         this.setPlaceholder();
 
         return super.setOptions(this.getPage());
@@ -115,15 +113,6 @@ export class StringSelectUnlimited extends StringSelectMenuBuilder {
         this.setPlaceholder();
 
         return super.setOptions(this.getPage());
-    }
-
-    override spliceOptions(index: number, deleteCount: number, options: APISelectMenuOption[]): this {
-        const deleted = this.menuOptions.splice(index, deleteCount, ...options);
-        this.totalItems += (options.length - deleted.length)
-
-        this.setPlaceholder();
-
-        return super.spliceOptions(index, deleteCount, ...options);
     }
 
     override setPlaceholder(placeholder?: string): this {
