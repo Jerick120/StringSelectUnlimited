@@ -45,3 +45,35 @@ A wrapper around discord.js `StringSelectMenu` to bypass Discord's 25 option lim
 |     `pageSize`      |  number  | Menu size excluding page options |
 
 
+# Examples
+
+## Dynamic Pagination
+
+```js
+import axios from 'axios';
+import {ActionRowBuilder} from 'discord.js';
+import {StringSelectUnlimited} from 'StringSelectUnlimited';
+
+const menu = new StringSelectUnlimited().setTotalItems(500);
+const limit = menu.pageSize;
+const offset = limit * (menu.currentPageNumber - 1);
+
+const {data} = await axios.get(`https://example.com/api/data`, {params: {limit, offset}});
+menu.setOptions(
+	data.map(d => ({label: d.title, value: String(d.id)})
+    ));
+
+return new ActionRowBuilder().addComponents(menu);
+```
+
+## Preloaded Pagination
+
+```js
+import {ActionRowBuilder} from 'discord.js';
+import {StringSelectUnlimited} from 'StringSelectUnlimited';
+
+const data = [{label: 'Example', value: '1'}]; // large array
+const menu = new StringSelectUnlimited().setOptions(data);
+return new ActionRowBuilder().addComponents(menu);
+```
+
