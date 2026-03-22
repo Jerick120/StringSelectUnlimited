@@ -1,0 +1,34 @@
+{
+  "name": "string-select-unlimited",
+  "version": "1.1.0",
+  "description": "Wrapper around discord.js StringSelectMenu to bypass Discord's 25 option limit.",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "type": "module",
+  "keywords": [
+    "discord",
+    "discordjs",
+    "discord.js",
+    "discord bots",
+    "string select menu",
+    "select menu limit"
+  ],
+  "scripts": {
+    "build": "tsc"
+  },
+  "files": [
+    "dist"
+  ],
+  "author": {
+    "name": "jerick120",
+    "url": "https://github.com/jerick120"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/jerick120/neuencode.git"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "discord.js": "^14.25.1"
+  }
+}
