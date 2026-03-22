@@ -50,7 +50,6 @@ export class StringSelectUnlimited extends StringSelectMenuBuilder {
 
     private parsePageData(pageNumber: number | null): string {
         return JSON.stringify({
-            page: this.page,
             goto: pageNumber || 0,
             ...this.pageData.data,
         });
@@ -102,7 +101,7 @@ export class StringSelectUnlimited extends StringSelectMenuBuilder {
 
     override setOptions(options: SelectMenuComponentOptionData[]): this {
         this.menuOptions = options;
-        this.totalItems ||= options.length;
+        if(!this.totalItems || options.length > this.totalItems) this.totalItems = options.length
 
         this.setPlaceholder();
 
@@ -120,7 +119,7 @@ export class StringSelectUnlimited extends StringSelectMenuBuilder {
 
     override spliceOptions(index: number, deleteCount: number, options: APISelectMenuOption[]): this {
         const deleted = this.menuOptions.splice(index, deleteCount, ...options);
-        this.totalItems = this.totalItems + (options.length - deleted.length)
+        this.totalItems += (options.length - deleted.length)
 
         this.setPlaceholder();
 
