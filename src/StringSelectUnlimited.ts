@@ -17,6 +17,7 @@ export class StringSelectUnlimited extends StringSelectMenuBuilder {
 
     private totalPages = 0;
     private totalItems: number;
+    private isTotalManual: boolean = false;
 
     private placeholder = 'Make a selection';
 
@@ -100,15 +101,24 @@ export class StringSelectUnlimited extends StringSelectMenuBuilder {
 
     override setOptions(options: SelectMenuComponentOptionData[]): this {
         this.menuOptions = options;
-        if(!this.totalItems || options.length > this.totalItems) this.totalItems = options.length
+        if (this.isTotalManual) {
+            if (options.length > this.totalItems) {
+                throw new Error('Option length cannot exceed the manually set total.')
+            }
+        } else {
+            this.totalItems = options.length;
+            this.page = 1;
+        }
+
         this.setPlaceholder();
 
         return super.setOptions(this.getPage());
     }
 
     override addOptions(options: SelectMenuComponentOptionData[]): this {
+        if (this.isTotalManual) throw new Error('Cannot use addOptions after manually setting the total. Use setOptions instead.')
         this.menuOptions.push(...options);
-        if(this.totalItems < this.menuOptions.length) this.totalItems += options.length
+        this.totalItems += options.length
 
         this.setPlaceholder();
 
@@ -126,7 +136,11 @@ export class StringSelectUnlimited extends StringSelectMenuBuilder {
     public setTotalItems(total: number): this {
         if (total < this.menuOptions.length)
             throw new Error("Total cannot be less than the number of items.");
+        if (this.menuOptions.length > this.menuLimit)
+            throw new Error("Total cannot be set manually with accumulated options.");
+
         this.totalItems = total;
+        this.isTotalManual = true;
 
         this.setPlaceholder()
 
