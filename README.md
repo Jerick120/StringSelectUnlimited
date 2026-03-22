@@ -1,8 +1,10 @@
 # String Select Unlimited
 
-A wrapper around [Discord.js](https://discord.js.org/) `StringSelectMenu` to bypass Discord's `25` option limit by adding pagination.
+A wrapper around [Discord.js](https://discord.js.org/) `StringSelectMenu` to bypass Discord's `25` option limit by
+adding pagination.
 
--  Used by [Pokecord++](https://pokecord.org) and [Audicy](https://audicy.xyz) Discord bots.
+- Used by [Pokecord++](https://pokecord.org) and [Audicy](https://audicy.xyz) Discord bots.
+- [Discord Server](https://bothunt.co/join/333749099897683980/466489412885282816)
 
 # Install
 
@@ -44,7 +46,6 @@ A wrapper around [Discord.js](https://discord.js.org/) `StringSelectMenu` to byp
 |  `prevPageNumber`   |  number  |       Previous page number       |
 |     `pageSize`      |  number  | Menu size excluding page options |
 
-
 # Examples
 
 ## Dynamic Pagination
@@ -61,7 +62,7 @@ const offset = limit * (menu.currentPageNumber - 1);
 const {data} = await axios.get(`https://example.com/api/data`, {params: {limit, offset}});
 menu.setOptions(
 	data.map(d => ({label: d.title, value: String(d.id)})
-    ));
+	));
 
 return new ActionRowBuilder().addComponents(menu);
 ```
