@@ -6,7 +6,7 @@ A wrapper around discord.js `StringSelectMenu` to bypass Discord's 25 option lim
 
 # Install
 
-`npm install string-select-unlimited`
+`npm install stringselectunlimited`
 
 # Usage
 

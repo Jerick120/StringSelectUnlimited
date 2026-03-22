@@ -8,7 +8,7 @@ export class StringSelectUnlimited extends StringSelectMenuBuilder {
     pageData;
     totalPages = 0;
     totalItems;
-    placeholder = 'Select an option';
+    placeholder = 'Make a selection';
     menuLimit = MAX_MENU_ITEMS;
     /**
      * @param page Initial page number
