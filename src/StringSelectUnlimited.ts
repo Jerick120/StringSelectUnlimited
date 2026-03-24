@@ -71,7 +71,6 @@ export class StringSelectUnlimited extends StringSelectMenuBuilder {
                     emoji: emojiNext,
                     value: this.parsePageData(this.totalPages),
                 } as SelectMenuComponentOptionData);
-
             if (this.page > 1)
                 pageData.unshift({
                     label: "← Previous",
@@ -101,13 +100,9 @@ export class StringSelectUnlimited extends StringSelectMenuBuilder {
 
     override setOptions(options: SelectMenuComponentOptionData[]): this {
         this.menuOptions = options;
-        if (this.isTotalManual) {
-            if (options.length > this.totalItems) {
-                throw new Error('Option length cannot exceed the manually set total.')
-            }
-        } else {
-            this.totalItems = options.length;
-            this.page = 1;
+        if (!this.isTotalManual || this.menuOptions.length > this.totalItems) {
+            if (this.menuOptions.length > this.totalItems) this.page = 1;
+            this.totalItems = this.menuOptions.length
         }
 
         this.setPlaceholder();
@@ -118,7 +113,7 @@ export class StringSelectUnlimited extends StringSelectMenuBuilder {
     override addOptions(options: SelectMenuComponentOptionData[]): this {
         if (this.isTotalManual) throw new Error('Cannot use addOptions after manually setting the total. Use setOptions instead.')
         this.menuOptions.push(...options);
-        this.totalItems += options.length
+        this.totalItems = this.menuOptions.length
 
         this.setPlaceholder();
 
@@ -134,11 +129,7 @@ export class StringSelectUnlimited extends StringSelectMenuBuilder {
     }
 
     public setTotalItems(total: number): this {
-        if (total < this.menuOptions.length)
-            throw new Error("Total cannot be less than the number of items.");
-        if (this.menuOptions.length > this.menuLimit)
-            throw new Error("Total cannot be set manually with accumulated options.");
-
+        if (total <= 0) throw new Error('Total must be >= 1.')
         this.totalItems = total;
         this.isTotalManual = true;
 

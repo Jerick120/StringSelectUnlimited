@@ -55,7 +55,7 @@ import axios from 'axios';
 import {ActionRowBuilder} from 'discord.js';
 import {StringSelectUnlimited} from 'stringselectunlimited';
 
-const menu = new StringSelectUnlimited().setTotalItems(500);
+const menu = new StringSelectUnlimited({totalItems: 500});
 const limit = menu.pageSize;
 const offset = limit * (menu.currentPageNumber - 1);
 
