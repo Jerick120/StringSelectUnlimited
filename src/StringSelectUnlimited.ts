@@ -8,19 +8,49 @@ import type {StringSelectUnlimitedOptions} from "./typings/StringSelectUnlimited
 const MAX_MENU_ITEMS = 25;
 
 export class StringSelectUnlimited extends StringSelectMenuBuilder {
-    // All select menu options
+    /**
+     * All select menu options.
+     * @private
+     */
     private menuOptions: SelectMenuComponentOptionData[] = [];
-
-    private page: number; // 1 based
-    // Additional data to add to the page option
+    /**
+     * Current page number starting from 1.
+     * @private
+     */
+    private page: number;
+    /**
+     * Additional data to add to the page option.
+     * @private
+     */
     private pageData: PageData;
-
+    /**
+     * Total number of pages.
+     * @private
+     */
     private totalPages = 0;
+    /**
+     * Total number of items.
+     * This is automatically inferred unless manually specified.
+     * @private
+     */
     private totalItems: number;
-    private isTotalManual: boolean = false;
-
+    /**
+     * Flag to check if totalItems were manually specified.
+     * Disables automatic length checking.
+     * @private
+     */
+    private isManualTotal: boolean = false;
+    /**
+     * Default placeholder.
+     * If pagination exists, `- Page {number}` is appended to the end of this string.
+     * @private
+     */
     private placeholder = 'Make a selection';
-
+    /**
+     * Max menu limit.
+     * If pagination exists, this is set to menuLimit - 2 to make room for page options.
+     * @private
+     */
     private menuLimit = MAX_MENU_ITEMS;
 
     /**
@@ -36,11 +66,14 @@ export class StringSelectUnlimited extends StringSelectMenuBuilder {
                 }: StringSelectUnlimitedOptions) {
         super();
 
+        if (page && page <= 0) throw new Error("Page must start from 1");
+        if (totalItems) this.isManualTotal = true;
+
         this.page = page || 1;
-        if (this.page <= 0) throw new Error("Page must start from 1");
 
         this.pageData = pageMetadata || {emoji: {}, data: {}};
         this.totalItems = totalItems || 0;
+
     }
 
     private parsePagination() {
@@ -100,10 +133,8 @@ export class StringSelectUnlimited extends StringSelectMenuBuilder {
 
     override setOptions(options: SelectMenuComponentOptionData[]): this {
         this.menuOptions = options;
-        if (!this.isTotalManual || this.menuOptions.length > this.totalItems) {
-            if (this.menuOptions.length > this.totalItems) this.page = 1;
-            this.totalItems = this.menuOptions.length
-        }
+
+        if (!this.isManualTotal) this.totalItems = this.menuOptions.length
 
         this.setPlaceholder();
 
@@ -111,9 +142,9 @@ export class StringSelectUnlimited extends StringSelectMenuBuilder {
     }
 
     override addOptions(options: SelectMenuComponentOptionData[]): this {
-        if (this.isTotalManual) throw new Error('Cannot use addOptions after manually setting the total. Use setOptions instead.')
         this.menuOptions.push(...options);
-        this.totalItems = this.menuOptions.length
+
+        if (!this.isManualTotal) this.totalItems = this.menuOptions.length
 
         this.setPlaceholder();
 
@@ -131,7 +162,7 @@ export class StringSelectUnlimited extends StringSelectMenuBuilder {
     public setTotalItems(total: number): this {
         if (total <= 0) throw new Error('Total must be >= 1.')
         this.totalItems = total;
-        this.isTotalManual = true;
+        this.isManualTotal = true;
 
         this.setPlaceholder()
 
