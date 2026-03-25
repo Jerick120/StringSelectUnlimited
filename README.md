@@ -37,14 +37,14 @@ adding pagination.
 
 ## Getters
 
-|       Method        | Returns  |           Description            |
-|:-------------------:|:--------:|:--------------------------------:|
-|   `pageMetadata`    | PageData |          Page Metadata           |
-| `currentPageNumber` |  number  |       Current page number        |
-|  `totalPageNumber`  |  number  |      Total number of pages       |
-|  `nextPageNumber`   |  number  |         Next page number         |
-|  `prevPageNumber`   |  number  |       Previous page number       |
-|     `pageSize`      |  number  | Menu size excluding page options |
+|       Method        |    Returns     |           Description            |
+|:-------------------:|:--------------:|:--------------------------------:|
+|   `pageMetadata`    |    PageData    |          Page Metadata           |
+| `currentPageNumber` |     number     |       Current page number        |
+|  `totalPageNumber`  |     number     |      Total number of pages       |
+|  `nextPageNumber`   | number \| null |         Next page number         |
+|  `prevPageNumber`   | number \| null |       Previous page number       |
+|     `pageSize`      |     number     | Menu size excluding page options |
 
 # Examples
 

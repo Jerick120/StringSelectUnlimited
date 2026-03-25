@@ -33,7 +33,7 @@ export class StringSelectUnlimited extends StringSelectMenuBuilder {
      * This is automatically inferred unless manually specified.
      * @private
      */
-    private totalItems: number;
+    private totalItems: number = 0;
     /**
      * Flag to check if totalItems were manually specified.
      * Disables automatic length checking.
@@ -66,14 +66,11 @@ export class StringSelectUnlimited extends StringSelectMenuBuilder {
                 }: StringSelectUnlimitedOptions) {
         super();
 
-        if (page && page <= 0) throw new Error("Page must start from 1");
-        if (totalItems) this.isManualTotal = true;
-
         this.page = page || 1;
-
         this.pageData = pageMetadata || {emoji: {}, data: {}};
-        this.totalItems = totalItems || 0;
 
+        if (page && page <= 0) throw new Error("Page must start from 1");
+        if (totalItems !== undefined) this.setTotalItems(totalItems);
     }
 
     private parsePagination() {
@@ -90,27 +87,28 @@ export class StringSelectUnlimited extends StringSelectMenuBuilder {
 
     private getPage(): SelectMenuComponentOptionData[] {
         if (!this.menuOptions.length) return []
-        const start = this.menuOptions.length === this.totalItems ? this.menuLimit * (this.page - 1) : 0;
-        const offset = this.menuOptions.length === this.totalItems ? this.menuLimit * this.page : this.menuLimit;
+        const isFullDataset = !this.isManualTotal
+        const start = isFullDataset ? this.menuLimit * (this.page - 1) : 0;
+        const offset = isFullDataset ? this.menuLimit * this.page : this.menuLimit;
         const pageData = this.menuOptions.slice(start, offset);
 
         if (this.totalPages > 1) {
-            const emojiNext = this.pageData.emoji?.next;
-            const emojiPrev = this.pageData.emoji?.previous;
+            const emojiNext = this.pageData.emoji?.next || '';
+            const emojiPrev = this.pageData.emoji?.previous || '';
             if (this.page === 1 && this.totalPages > 2)
                 pageData.unshift({
                     label: "Last →→",
                     description: `Page ${this.totalPageNumber}`,
                     emoji: emojiNext,
                     value: this.parsePageData(this.totalPages),
-                } as SelectMenuComponentOptionData);
+                } );
             if (this.page > 1)
                 pageData.unshift({
                     label: "← Previous",
                     description: `Page ${this.prevPageNumber}`,
                     emoji: emojiPrev,
                     value: this.parsePageData(this.prevPageNumber),
-                } as SelectMenuComponentOptionData);
+                } );
 
             if (this.page === this.totalPages && this.totalPages > 2)
                 pageData.push({
@@ -118,7 +116,7 @@ export class StringSelectUnlimited extends StringSelectMenuBuilder {
                     description: `Page 1`,
                     emoji: emojiPrev,
                     value: this.parsePageData(1),
-                } as SelectMenuComponentOptionData);
+                } );
 
             if (this.page < this.totalPages)
                 pageData.push({
@@ -126,7 +124,7 @@ export class StringSelectUnlimited extends StringSelectMenuBuilder {
                     description: `Page ${this.nextPageNumber}`,
                     emoji: emojiNext,
                     value: this.parsePageData(this.nextPageNumber),
-                } as SelectMenuComponentOptionData);
+                });
         }
         return pageData;
     }
@@ -154,7 +152,7 @@ export class StringSelectUnlimited extends StringSelectMenuBuilder {
     override setPlaceholder(placeholder?: string): this {
         this.parsePagination()
         this.placeholder = placeholder || this.placeholder
-        const placeholderParsed = `${this.placeholder}${this.totalItems >= MAX_MENU_ITEMS ? ` - Page ${this.page}` : ""}`;
+        const placeholderParsed = `${this.placeholder}${this.totalPages > 1 ? ` - Page ${this.page}` : ""}`;
 
         return super.setPlaceholder(placeholderParsed);
     }
@@ -170,10 +168,8 @@ export class StringSelectUnlimited extends StringSelectMenuBuilder {
     }
 
     public setPageMetadata(metadata: PageData): this {
-        if (this.pageData) {
-            this.pageData.data = {...this.pageData.data, ...(metadata.data || {})}
-            this.pageData.emoji = {...this.pageData.emoji, ...(metadata.emoji || {})}
-        } else this.pageData = metadata
+        this.pageData.data = {...this.pageData.data, ...(metadata.data || {})}
+        this.pageData.emoji = {...this.pageData.emoji, ...(metadata.emoji || {})}
 
         return super.setOptions(this.getPage());
     }
