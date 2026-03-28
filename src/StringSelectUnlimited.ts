@@ -179,6 +179,9 @@ export class StringSelectUnlimited extends StringSelectMenuBuilder {
         if (page <= 0 || page > this.totalPages)
             throw new Error(`Page must be between 1 and ${this.totalPages}`);
         this.page = page;
+
+        this.setPlaceholder()
+
         return super.setOptions(this.getPage())
     }
 

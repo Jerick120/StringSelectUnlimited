@@ -1,6 +1,6 @@
 {
   "name": "stringselectunlimited",
-  "version": "1.4.6",
+  "version": "1.4.7",
   "description": "Wrapper around Discord.js StringSelectMenu to bypass Discord's 25 option limit.",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
