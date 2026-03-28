@@ -87,7 +87,7 @@ export class StringSelectUnlimited extends StringSelectMenuBuilder {
 
     private getPage(): SelectMenuComponentOptionData[] {
         if (!this.menuOptions.length) return []
-        const isFullDataset = !this.isManualTotal
+        const isFullDataset = this.menuOptions.length === this.totalItems
         const start = isFullDataset ? this.menuLimit * (this.page - 1) : 0;
         const offset = isFullDataset ? this.menuLimit * this.page : this.menuLimit;
         const pageData = this.menuOptions.slice(start, offset);
