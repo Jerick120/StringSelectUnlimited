@@ -67,7 +67,7 @@ export class StringSelectUnlimited extends StringSelectMenuBuilder {
         super();
 
         this.page = page || 1;
-        this.pageData = pageMetadata || {emoji: {}, data: {}};
+        this.pageData = pageMetadata ? {...pageMetadata} : {emoji: {}, data: {}};
 
         if (page && page <= 0) throw new Error("Page must start from 1");
         if (totalItems !== undefined) this.setTotalItems(totalItems);
@@ -101,14 +101,14 @@ export class StringSelectUnlimited extends StringSelectMenuBuilder {
                     description: `Page ${this.totalPageNumber}`,
                     emoji: emojiNext,
                     value: this.parsePageData(this.totalPages),
-                } );
+                });
             if (this.page > 1)
                 pageData.unshift({
                     label: "← Previous",
                     description: `Page ${this.prevPageNumber}`,
                     emoji: emojiPrev,
                     value: this.parsePageData(this.prevPageNumber),
-                } );
+                });
 
             if (this.page === this.totalPages && this.totalPages > 2)
                 pageData.push({
@@ -116,7 +116,7 @@ export class StringSelectUnlimited extends StringSelectMenuBuilder {
                     description: `Page 1`,
                     emoji: emojiPrev,
                     value: this.parsePageData(1),
-                } );
+                });
 
             if (this.page < this.totalPages)
                 pageData.push({
