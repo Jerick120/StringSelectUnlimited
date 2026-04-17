@@ -14,15 +14,15 @@ export class StringSelectUnlimited extends StringSelectMenuBuilder {
      */
     private menuOptions: SelectMenuComponentOptionData[] = [];
     /**
-     * Current page number starting from 1.
-     * @private
-     */
-    private page: number;
-    /**
      * Additional data to add to the page option.
      * @private
      */
     private pageData: PageData;
+    /**
+     * Current page number starting from 1.
+     * @private
+     */
+    private page = 1;
     /**
      * Total number of pages.
      * @private
@@ -66,10 +66,9 @@ export class StringSelectUnlimited extends StringSelectMenuBuilder {
                 }: StringSelectUnlimitedOptions) {
         super();
 
-        this.page = page || 1;
         this.pageData = pageMetadata ? {...pageMetadata} : {emoji: {}, data: {}};
 
-        if (page && page <= 0) throw new Error("Page must start from 1");
+        if (page) this.setPageNumber(page);
         if (totalItems !== undefined) this.setTotalItems(totalItems);
     }
 
@@ -164,6 +163,17 @@ export class StringSelectUnlimited extends StringSelectMenuBuilder {
 
         this.setPlaceholder()
 
+        return this;
+    }
+
+    public setPageNumber(page: number): this {
+        /**
+         * This force sets the page number without loading the page data.
+         * Can be useful if the same instance is used for different datasets.
+         * goto() can be used if page data needs to be loaded.
+         * */
+        if (this.page <= 0) throw new Error('Page cannot be <= 0.')
+        this.page = page
         return this;
     }
 
