@@ -24,16 +24,17 @@ adding pagination.
 
 ## Methods
 
-| Method |  Parameters  |        Description        |
-|:------:|:------------:|:-------------------------:|
-| `goto` | page: number | Navigate to specific page |
+| Method |  Parameters  |            Description            |
+|:------:|:------------:|:---------------------------------:|
+| `goto` | page: number | Load page data and navigate to it |
 
 ## Setters
 
-|      Method       |     Parameters     |     Description      |
-|:-----------------:|:------------------:|:--------------------:|
-| `setPageMetadata` | metadata: PageData | Update page metadata |
-|  `setTotalItems`  |   total: number    |  Update total items  |
+|      Method       |     Parameters     |                 Description                  |
+|:-----------------:|:------------------:|:--------------------------------------------:|
+| `setPageMetadata` | metadata: PageData |             Update page metadata             |
+|  `setPageNumber`  |    page: number    | Update page number without loading page data |
+|  `setTotalItems`  |   total: number    |              Update total items              |
 
 ## Getters
 

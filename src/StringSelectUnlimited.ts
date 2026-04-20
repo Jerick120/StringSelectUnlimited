@@ -68,7 +68,7 @@ export class StringSelectUnlimited extends StringSelectMenuBuilder {
 
         this.pageData = pageMetadata ? {...pageMetadata} : {emoji: {}, data: {}};
 
-        if (page) this.setPageNumber(page);
+        if (page !== undefined) this.setPageNumber(page);
         if (totalItems !== undefined) this.setTotalItems(totalItems);
     }
 
@@ -172,7 +172,7 @@ export class StringSelectUnlimited extends StringSelectMenuBuilder {
          * Can be useful if the same instance is used for different datasets.
          * goto() can be used if page data needs to be loaded.
          * */
-        if (this.page <= 0) throw new Error('Page cannot be <= 0.')
+        if (!Number.isFinite(page) || page <= 0) throw new Error('Page cannot be <= 0.')
         this.page = page
         return this;
     }
