@@ -172,7 +172,8 @@ export class StringSelectUnlimited extends StringSelectMenuBuilder {
          * Can be useful if the same instance is used for different datasets.
          * goto() can be used if page data needs to be loaded.
          * */
-        if (!Number.isFinite(page) || page <= 0) throw new Error('Page cannot be <= 0.')
+        if (!Number.isFinite(page)) throw new Error('Invalid page number')
+        if (page <= 0) throw new Error('Page cannot be <= 0.')
         this.page = page
         return this;
     }
