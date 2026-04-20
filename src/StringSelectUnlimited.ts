@@ -187,6 +187,7 @@ export class StringSelectUnlimited extends StringSelectMenuBuilder {
 
     public goto(page: number): this {
         if (!this.menuOptions.length) throw new Error(`No options added`);
+        if (!Number.isFinite(page)) throw new Error('Invalid page number')
         if (page <= 0 || page > this.totalPages)
             throw new Error(`Page must be between 1 and ${this.totalPages}`);
         this.page = page;
