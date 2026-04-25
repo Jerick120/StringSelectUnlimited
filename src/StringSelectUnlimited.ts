@@ -73,7 +73,7 @@ export class StringSelectUnlimited extends StringSelectMenuBuilder {
     }
 
     private parsePagination() {
-        this.menuLimit = this.totalItems >= MAX_MENU_ITEMS ? MAX_MENU_ITEMS - 2 : MAX_MENU_ITEMS;
+        this.menuLimit = this.totalItems > MAX_MENU_ITEMS ? MAX_MENU_ITEMS - 2 : MAX_MENU_ITEMS;
         this.totalPages = Math.ceil(this.totalItems / this.menuLimit);
     }
 
