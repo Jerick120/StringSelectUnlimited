@@ -1,5 +1,6 @@
 import {
     StringSelectMenuBuilder,
+    type ComponentEmojiResolvable,
     type SelectMenuComponentOptionData,
 } from "discord.js";
 import type {PageData} from "./typings/PageData.js";
@@ -63,10 +64,10 @@ export class StringSelectUnlimited extends StringSelectMenuBuilder {
                     page,
                     totalItems,
                     pageMetadata,
-                }: StringSelectUnlimitedOptions) {
+                }: StringSelectUnlimitedOptions = {}) {
         super();
 
-        this.pageData = pageMetadata ? {...pageMetadata} : {emoji: {}, data: {}};
+        this.pageData = pageMetadata ? {...pageMetadata} : {};
 
         if (page !== undefined) this.setPageNumber(page);
         if (totalItems !== undefined) this.setTotalItems(totalItems);
@@ -84,6 +85,17 @@ export class StringSelectUnlimited extends StringSelectMenuBuilder {
         });
     }
 
+    private buildPageOption(
+        label: string,
+        description: string,
+        emoji: ComponentEmojiResolvable | undefined,
+        value: string
+    ): SelectMenuComponentOptionData {
+        const opt: SelectMenuComponentOptionData = {label, description, value};
+        if (emoji) opt.emoji = emoji;
+        return opt;
+    }
+
     private getPage(): SelectMenuComponentOptionData[] {
         if (!this.menuOptions.length) return []
         const isFullDataset = this.menuOptions.length === this.totalItems
@@ -92,38 +104,38 @@ export class StringSelectUnlimited extends StringSelectMenuBuilder {
         const pageData = this.menuOptions.slice(start, offset);
 
         if (this.totalPages > 1) {
-            const emojiNext = this.pageData.emoji?.next || '';
-            const emojiPrev = this.pageData.emoji?.previous || '';
+            const emojiNext = this.pageData.emoji?.next;
+            const emojiPrev = this.pageData.emoji?.previous;
             if (this.page === 1 && this.totalPages > 2)
-                pageData.unshift({
-                    label: "Last →→",
-                    description: `Page ${this.totalPageNumber}`,
-                    emoji: emojiNext,
-                    value: this.parsePageData(this.totalPages),
-                });
+                pageData.unshift(this.buildPageOption(
+                    "Last →→",
+                    `Page ${this.totalPageNumber}`,
+                    emojiNext,
+                    this.parsePageData(this.totalPages),
+                ));
             if (this.page > 1)
-                pageData.unshift({
-                    label: "← Previous",
-                    description: `Page ${this.prevPageNumber}`,
-                    emoji: emojiPrev,
-                    value: this.parsePageData(this.prevPageNumber),
-                });
+                pageData.unshift(this.buildPageOption(
+                    "← Previous",
+                    `Page ${this.prevPageNumber}`,
+                    emojiPrev,
+                    this.parsePageData(this.prevPageNumber),
+                ));
 
             if (this.page === this.totalPages && this.totalPages > 2)
-                pageData.push({
-                    label: "←← First",
-                    description: `Page 1`,
-                    emoji: emojiPrev,
-                    value: this.parsePageData(1),
-                });
+                pageData.push(this.buildPageOption(
+                    "←← First",
+                    `Page 1`,
+                    emojiPrev,
+                    this.parsePageData(1),
+                ));
 
             if (this.page < this.totalPages)
-                pageData.push({
-                    label: "Next →",
-                    description: `Page ${this.nextPageNumber}`,
-                    emoji: emojiNext,
-                    value: this.parsePageData(this.nextPageNumber),
-                });
+                pageData.push(this.buildPageOption(
+                    "Next →",
+                    `Page ${this.nextPageNumber}`,
+                    emojiNext,
+                    this.parsePageData(this.nextPageNumber),
+                ));
         }
         return pageData;
     }
